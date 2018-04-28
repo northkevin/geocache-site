@@ -10,6 +10,7 @@
     <meta http-equiv="Content-Language" content="en-us" />
 
     <link rel="shortcut icon" href="https://i.imgur.com/PpBHRUq.png" type="image/png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="geocache.css" type="text/css" />
 
     <script src="http://u.arizona.edu/~lxu/cscv337/sp18/hw6/js/prototype.js" type="text/javascript"></script>
@@ -33,28 +34,51 @@
           <fieldset>
             <legend> Geocache Locator </legend>
             <p> Click on the map to select a location, or enter one manually below. </p>
-            <br>
-            <span class="label">Latitude:</span>
-            <input id="latitude" type="text" name="latitude" size="10" />
-            <span class="error">* <?php echo $latitude;?></span>
-            <br>
-            <span class="label">Longitude:</span>
-            <input id="longitude" type="text" name="longitude" size="10" />
-            <span class="error">* <?php echo $longitude;?></span>
-            <br>
-            <span class="label">Radius (miles):</span>
-            <input id="radius" type="text" name="radius" size="10" />
-            <span class="error">* <?php echo $radius;?></span>
-            <br>
-            <span class="label">Cache Type:</span>
-            <input id="cache" type="text" name="cache" size="10" />
-            <span class="error">* <?php echo $cache;?></span>
-            <br>
-            <span class="label">Difficulty:</span>
-            <input id="difficulty" type="text" name="difficulty" size="10" />
-            <span class="error">* <?php echo $difficulty;?></span>
-            <br>
-            <input class="button" type="submit" value="Submit" />
+
+            <div class="form-group row">
+              <label for="inputLatitude" class="col-sm-2 col-form-label">Latitude:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputLatitude" placeholder="latitude">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="inputLongitude" class="col-sm-2 col-form-label">Longitude:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputLongitude" placeholder="longitude">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="inputRadius" class="col-sm-2 col-form-label">Radius (miles):</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputRaidus" placeholder="radius">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="selectCacheType" class="col-sm-2 col-form-label">Cache Type:</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="selectCacheType" placeholder="cache-type">
+                  <option>opt 1</option>
+                  <option>opt 2</option>
+                  <option>opt 3</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="selectDifficulty" class="col-sm-2 col-form-label">Difficulty:</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="selectDifficulty" placeholder="difficulty">
+                  <option>opt 1</option>
+                  <option>opt 2</option>
+                  <option>opt 3</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Submit</button>
           </fieldset>
         </form>
       </div>
