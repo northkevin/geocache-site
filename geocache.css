@@ -1,0 +1,23 @@
+body
+{
+  text-align: center;
+  font-family: 'Ubuntu Mono'; 
+  font-size: 18px;
+  margin: 0;
+}
+
+.banner
+{
+  font-size: 24px;
+}
+
+.footer 
+{
+  font-family: 'Ubuntu Mono';
+  font-size: 14px;
+  margin:0 auto;
+  width:800px;
+  height:auto;
+  overflow:hidden;
+  bottom: 0px;
+}
