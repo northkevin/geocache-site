@@ -1,3 +1,23 @@
+<?php
+  // $GOOGLEMAPKEY = getenv('GOOGLE_MAP_KEY', true) ?: getenv('GOOGLE_MAP_KEY');
+  $GOOGLEMAPKEY = get_google_api_key();
+
+function get_google_api_key() 
+{
+  return read_key('google_api_key');
+}
+
+function read_key($filename)
+{
+  $target_filename      = join(DIRECTORY_SEPARATOR,[__DIR__, $filename]);
+  $local_file           = fopen($target_filename, "r");   // open file
+  $key                  = fgets($local_file);             // populate $info_data array
+  fclose($local_file);
+  return $key;
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <!--
@@ -21,7 +41,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- javascript for google maps -->
     <script src="geocache.js" type="text/javascript"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB27T0TNsv6oO8sWKaYK9Wmj3al7HVfgCQ&callback=initMap" 
+    <script src="https://maps.googleapis.com/maps/api/js?key=<?=$GOOGLEMAPKEY?>&callback=initMap" 
     async defer>
     </script>
   </head>
