@@ -6,6 +6,11 @@ body
   margin: 0;
 }
 
+.has-padding
+{
+  margin: 2px;
+}
+
 .title
 {
   font-size: 24px;

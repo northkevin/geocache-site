@@ -15,10 +15,15 @@
 
     <script src="http://u.arizona.edu/~lxu/cscv337/sp18/hw6/js/prototype.js" type="text/javascript"></script>
     <script src="http://u.arizona.edu/~lxu/cscv337/sp18/hw6/js/scriptaculous.js" type="text/javascript"></script>
+    <!-- css bootstrap -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- javascript for google maps -->
     <script src="geocache.js" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB27T0TNsv6oO8sWKaYK9Wmj3al7HVfgCQ&callback=initMap" 
+    async defer>
+    </script>
   </head>
 
   <body>
@@ -39,7 +44,7 @@
         <div class="row">
 
           <!-- col 1 -->
-          <div class="col-md">
+          <div class="col-md has-padding">
             <div class="row" id="geocache-form-inputs">
               <form class="form-control needs-validation" id="geocache-form" method="post" action="query.php" novalidate>
                 <fieldset>
@@ -114,9 +119,7 @@
                 </div>
 
                 <div class="form-group form-row-md">
-                  
                     <button class="btn btn-primary form-control" type="submit">Submit</button>
-                  
                 </div>
 
                 </fieldset>
@@ -179,11 +182,11 @@
           </div>
 
           <!-- col 2 -->
-          <div class="col-md" id="google-maps-api">
+          <div class="col-md-6 has-padding" onload="new BoundingBox" id="google-maps-api">
           </div>
 
           <!-- col 3 -->
-          <div class="col-md" id="flickr-api"> 
+          <div class="col-md has-padding" id="flickr-api"> 
           </div>
 
         </div>
@@ -203,17 +206,6 @@
           </div>
         </div>
       </div>
-
-      
-
-      
-
-      
-
-      <div id="flickr-api"> </div>
-
-      
-    </div>
 
     <div class="footer">
       <p>
