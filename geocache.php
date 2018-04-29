@@ -118,10 +118,11 @@
                   </div>
                 </div>
 
-                
-              </fieldset>
-            </form>
+                </fieldset>
+              </form>
             </div>
+
+            
             
 
             <script>
@@ -156,6 +157,41 @@
 
           <!-- col 1 -->
           <div class="col-md" id="geocache-form-results">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Lattitude</th>
+                  <th scope="col">Longitude</th>
+                  <th scope="col">Difficulty</th>
+                  <th scope="col">Cache Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row">32.14105481</th>
+                  <td>-110.17201093</td>
+                  <td>10</td>
+                  <td>@multi-cache</td>
+                </tr>
+                <tr>
+                  <td scope="row">32.22111910</th>
+                  <td>-110.08108222</td>
+                  <td>4</td>
+                  <td>@mystery-puzzle</td>
+                </tr>
+                <tr>
+                  <td scope="row">32.33456564</th>
+                  <td>-110.71970180</td>
+                  <td>6</td>
+                  <td>@traditional</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+           <!-- col 2 -->
+          <div class="col-md" id="placeholder-until-google-is-there">
 
           </div>
         </div>
