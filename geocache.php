@@ -36,15 +36,13 @@
     </div>
 
     <div id="main">
-      <!-- a place to inject the results from actors.php -->
 
-      <div class="container">
+      <div class="container-fluid">
 
         <!-- row 1 -->
         <div class="row">
-
           <!-- col 1 -->
-          <div class="col-md has-padding">
+          <div class="col-3 has-padding">
             <div class="row" id="geocache-form-inputs">
               <form class="form-control needs-validation" id="geocache-form" method="post" action="query.php" novalidate>
                 <fieldset>
@@ -57,43 +55,43 @@
                 </div>
                 
                 <div class="form-row justify-content-center">
-                  <div class="form-group col-md-4 justify-content-left">
+                  <div class="form-group col-md-3 justify-content-right">
                     <label for="inputLatitude">Latitude:</label>
                   </div>
                   <div class="form-group col-md-6">
                     <input type="text" class="form-control" id="inputLatitude" placeholder="latitude" required>
                   </div>
-                  <div class="invalid-feedback">
+                  <div class="form-group col-md-3 invalid-feedback">
                     Please provide a valid Latitude.
                   </div>
                 </div>
 
                 <div class="form-row justify-content-center">
-                  <div class="form-group col-md-4 justify-content-left">
+                  <div class="form-group col-md-3 justify-content-left">
                     <label for="inputLongitude">Longitude:</label>
                   </div>
                   <div class="form-group col-md-6">
                     <input type="text" class="form-control" id="inputLongitude" placeholder="longitude" required>
                   </div>
-                  <div class="invalid-feedback">
+                  <div class="form-group col-md-3 invalid-feedback">
                     Please provide a valid Longitude.
                   </div>
                 </div>
 
                 <div class="form-row justify-content-center">
-                  <div class="form-group col-md-4 justify-content-left">
+                  <div class="form-group col-md-3 justify-content-left">
                     <label for="inputRadius">Radius (miles):</label>
                   </div>
                   <div class="form-group col-md-6">
                     <input type="text" class="form-control" id="inputRaidus" placeholder="radius" required>
                   </div>
-                  <div class="invalid-feedback">
+                  <div class="form-group col-md-3 invalid-feedback">
                     Please provide a valid Radius.
                   </div>
                 </div>
 
-                <div class="form-group form-row justify-content-center">
-                  <div class="form-group col-md-4 justify-content-left">
+                <div class="form-row form-group zero-margin-bottom justify-content-center">
+                  <div class="form-group col-md-3 justify-content-left">
                     <label for="selectCacheType">Cache Type:</label>
                   </div>
                   <div class="form-group col-md-6">
@@ -106,7 +104,7 @@
                 </div>
 
                 <div class="form-group form-row justify-content-center">
-                  <div class="form-group col-md-4 justify-content-left">
+                  <div class="form-group col-md-3 justify-content-left">
                     <label for="selectDifficulty">Difficulty:</label>
                   </div>
                   <div class="form-group col-md-6">
@@ -118,14 +116,56 @@
                   </div>
                 </div>
 
-                <div class="form-group form-row-md">
+                <div class="form-group form-row">
+                  <div class="col"></div>
+                  <div class="col-md-8 justify-content-center">
                     <button class="btn btn-primary form-control" type="submit">Submit</button>
+                  </div>
+                  <div class="col"></div>
                 </div>
 
                 </fieldset>
               </form>
             </div>
 
+            
+            
+            <script>
+              // Example starter JavaScript for disabling form submissions if there are invalid fields
+              (function() {
+                'use strict';
+                window.addEventListener('load', function() {
+                  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                  var forms = document.getElementsByClassName('needs-validation');
+                  // Loop over them and prevent submission
+                  var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                      if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                      }
+                      form.classList.add('was-validated');
+                    }, false);
+                  });
+                }, false);
+              })();
+            </script>
+          </div>
+
+          <!-- col 2 -->
+          <div class="col-6 has-padding" onload="new BoundingBox" id="google-maps-api">
+          </div>
+
+          <!-- col 3 -->
+          <div class="col-3 has-padding" id="flickr-api"> 
+            <p> Coming Soon..    Flickr    Coming Soon..</p>
+          </div>
+        </div>
+
+        <!-- row 2 -->
+        <div class="row">
+          <!-- col 1 -->
+          <div class="col" id="geocache-form-results">
             <div class="row" id="geocache-form-results">
               <table class="table table-hover">
                 <thead>
@@ -158,59 +198,12 @@
                 </tbody>
               </table>
             </div>
-            
-            <script>
-              // Example starter JavaScript for disabling form submissions if there are invalid fields
-              (function() {
-                'use strict';
-                window.addEventListener('load', function() {
-                  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                  var forms = document.getElementsByClassName('needs-validation');
-                  // Loop over them and prevent submission
-                  var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                      if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                      }
-                      form.classList.add('was-validated');
-                    }, false);
-                  });
-                }, false);
-              })();
-            </script>
-          </div>
-
-          <!-- col 2 -->
-          <div class="col-md-6 has-padding" onload="new BoundingBox" id="google-maps-api">
-          </div>
-
-          <!-- col 3 -->
-          <div class="col-md has-padding" id="flickr-api"> 
-          </div>
-
-        </div>
-
-        <!-- row 2 -->
-        <div class="row">
-
-          <!-- col 1 -->
-          <div class="col-md" id="geocache-form-results">
-            
-
-          </div>
-
-           <!-- col 2 -->
-          <div class="col-md" id="placeholder-until-google-is-there">
-
           </div>
         </div>
       </div>
 
     <div class="footer">
-      <p>
-        CSCV 337 - Kevin North - 4/28/2018
-      </p>
+      <a href="https://github.com/northkevin/geocache-site"><img src="https://i.imgur.com/Nex6B0O.png"> - Source</img> </a>
     </div>
 
     

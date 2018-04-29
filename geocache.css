@@ -2,13 +2,23 @@ body
 {
   text-align: center;
   font-family: 'Ubuntu Mono'; 
-  font-size: 18px;
+  font-size: 16px;
   margin: 0;
 }
 
+.ml-1 {
+  margin-left: ($spacer * .25) !important;
+}
+
+
 .has-padding
 {
-  margin: 2px;
+  /*margin: 2px;*/
+}
+
+.zero-margin-bottom
+{
+  margin-bottom: 0rem;
 }
 
 .title
@@ -29,8 +39,7 @@ label.title
 
 .footer 
 {
-  font-family: 'Ubuntu Mono';
-  font-size: 14px;
+  font-size: 12px;
   margin:0 auto;
   width:800px;
   height:auto;
