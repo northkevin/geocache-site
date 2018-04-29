@@ -6,9 +6,15 @@ body
   margin: 0;
 }
 
-.banner
+.title
 {
   font-size: 24px;
+}
+
+.banner
+{
+  background-image: url(https://i.imgur.com/TmNA8BU.jpg);
+  background-size: 75% 50%;
 }
 
 label.title
