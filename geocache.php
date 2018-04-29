@@ -153,15 +153,17 @@
           </div>
 
           <!-- col 2 -->
-          <div class="col-6 has-padding" onload="new BoundingBox" id="google-maps-api">
+          <div class="col-6 has-padding" id="google-maps-api">
           </div>
 
           <!-- col 3 -->
           <div class="col-3 has-padding" id="flickr-api"> 
             <p> Coming Soon..    Flickr    Coming Soon..</p>
+
           </div>
         </div>
 
+        <div class="row"><hr></div>
         <!-- row 2 -->
         <div class="row">
           <!-- col 1 -->
@@ -201,6 +203,7 @@
           </div>
         </div>
       </div>
+    </div>
 
     <div class="footer">
       <a href="https://github.com/northkevin/geocache-site"><img src="https://i.imgur.com/Nex6B0O.png"> - Source</img> </a>
