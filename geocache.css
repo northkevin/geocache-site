@@ -11,6 +11,11 @@ body
   font-size: 24px;
 }
 
+label.title
+{
+  font-size: 24px;
+}
+
 .footer 
 {
   font-family: 'Ubuntu Mono';
