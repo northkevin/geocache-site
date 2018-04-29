@@ -38,9 +38,9 @@
         <div class="row">
 
           <!-- col 1 -->
-          <div class="col-md" id="geocache-form-inputs">
-            <div class="row justify-content-center">
-              <form class="needs-validation" id="geocache-form" method="post" action="query.php" novalidate>
+          <div class="col-md">
+            <div class="row" id="geocache-form-inputs">
+              <form class="form-control needs-validation" id="geocache-form" method="post" action="query.php" novalidate>
                 <fieldset>
 
                 <div class="form-row justify-content-center">
@@ -86,7 +86,7 @@
                   </div>
                 </div>
 
-                <div class="form-group row justify-content-center">
+                <div class="form-group form-row justify-content-center">
                   <div class="form-group col-md-4 justify-content-left">
                     <label for="selectCacheType">Cache Type:</label>
                   </div>
@@ -99,7 +99,7 @@
                   </div>
                 </div>
 
-                <div class="form-group row justify-content-center">
+                <div class="form-group form-row justify-content-center">
                   <div class="form-group col-md-4 justify-content-left">
                     <label for="selectDifficulty">Difficulty:</label>
                   </div>
@@ -112,17 +112,48 @@
                   </div>
                 </div>
 
-                <div class="form-group row justify-content-center">
-                  <div class="form-group col-md-6">
-                    <button class="btn btn-primary" type="submit">Submit</button>
-                  </div>
+                <div class="form-group form-row-md">
+                  
+                    <button class="btn btn-primary form-control" type="submit">Submit</button>
+                  
                 </div>
 
                 </fieldset>
               </form>
             </div>
 
-            
+            <div class="row" id="geocache-form-results">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Lattitude</th>
+                    <th scope="col">Longitude</th>
+                    <th scope="col">Difficulty</th>
+                    <th scope="col">Cache Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row">32.14105481</th>
+                    <td>-110.17201093</td>
+                    <td>10</td>
+                    <td>@multi-cache</td>
+                  </tr>
+                  <tr>
+                    <td scope="row">32.22111910</th>
+                    <td>-110.08108222</td>
+                    <td>4</td>
+                    <td>@mystery-puzzle</td>
+                  </tr>
+                  <tr>
+                    <td scope="row">32.33456564</th>
+                    <td>-110.71970180</td>
+                    <td>6</td>
+                    <td>@traditional</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             
 
             <script>
@@ -157,36 +188,7 @@
 
           <!-- col 1 -->
           <div class="col-md" id="geocache-form-results">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Lattitude</th>
-                  <th scope="col">Longitude</th>
-                  <th scope="col">Difficulty</th>
-                  <th scope="col">Cache Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td scope="row">32.14105481</th>
-                  <td>-110.17201093</td>
-                  <td>10</td>
-                  <td>@multi-cache</td>
-                </tr>
-                <tr>
-                  <td scope="row">32.22111910</th>
-                  <td>-110.08108222</td>
-                  <td>4</td>
-                  <td>@mystery-puzzle</td>
-                </tr>
-                <tr>
-                  <td scope="row">32.33456564</th>
-                  <td>-110.71970180</td>
-                  <td>6</td>
-                  <td>@traditional</td>
-                </tr>
-              </tbody>
-            </table>
+            
 
           </div>
 
