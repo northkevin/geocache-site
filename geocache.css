@@ -6,6 +6,11 @@ body
   margin: 0;
 }
 
+img.flickr-api
+{
+  max-width: 100%;
+}
+
 .ml-1 {
   margin-left: ($spacer * .25) !important;
 }

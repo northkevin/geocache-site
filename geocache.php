@@ -1,20 +1,11 @@
 <?php
-  // $GOOGLEMAPKEY = getenv('GOOGLE_MAP_KEY', true) ?: getenv('GOOGLE_MAP_KEY');
-  $GOOGLEMAPKEY = get_google_api_key();
 
-function get_google_api_key() 
-{
-  return read_key('google_api_key');
-}
+require "main.php";
 
-function read_key($filename)
-{
-  $target_filename      = join(DIRECTORY_SEPARATOR,[__DIR__, $filename]);
-  $local_file           = fopen($target_filename, "r");   // open file
-  $key                  = fgets($local_file);             // populate $info_data array
-  fclose($local_file);
-  return $key;
-}
+// default display is Tucson
+// $displayGeocacheSelection = new GeocacheSelection(32.253, -110.912, 5, 'Traditional', 7);
+
+
 
 ?>
 
@@ -41,9 +32,7 @@ function read_key($filename)
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- javascript for google maps -->
     <script src="geocache.js" type="text/javascript"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=<?=$GOOGLEMAPKEY?>&callback=initMap" 
-    async defer>
-    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<?=$GOOGLEMAPKEY?>&callback=initMap" async defer> </script>
   </head>
 
   <body>
@@ -64,7 +53,7 @@ function read_key($filename)
           <!-- col 1 -->
           <div class="col-3 has-padding">
             <div class="row" id="geocache-form-inputs">
-              <form class="form-control needs-validation" id="geocache-form" method="post" action="query.php" novalidate>
+              <form class="form-control" id="geocache-form" onSubmit="handleSubmit()">
                 <fieldset>
 
                 <div class="form-row justify-content-center">
@@ -79,7 +68,7 @@ function read_key($filename)
                     <label for="inputLatitude">Latitude:</label>
                   </div>
                   <div class="form-group col-md-6">
-                    <input type="text" class="form-control" id="inputLatitude" placeholder="latitude" required>
+                    <input type="text" class="form-control" id="inputLatitude" name="latitude" placeholder="<?=$displayGeocacheSelection->getLatitude()?>" required>
                   </div>
                   <div class="form-group col-md-3 invalid-feedback">
                     Please provide a valid Latitude.
@@ -91,7 +80,7 @@ function read_key($filename)
                     <label for="inputLongitude">Longitude:</label>
                   </div>
                   <div class="form-group col-md-6">
-                    <input type="text" class="form-control" id="inputLongitude" placeholder="longitude" required>
+                    <input type="text" class="form-control" id="inputLongitude" name="longitude" placeholder="<?=$displayGeocacheSelection->getLongitude()?>" required>
                   </div>
                   <div class="form-group col-md-3 invalid-feedback">
                     Please provide a valid Longitude.
@@ -103,7 +92,7 @@ function read_key($filename)
                     <label for="inputRadius">Radius (miles):</label>
                   </div>
                   <div class="form-group col-md-6">
-                    <input type="text" class="form-control" id="inputRaidus" placeholder="radius" required>
+                    <input type="text" class="form-control" id="inputRaidus" name="radius" placeholder="<?=$displayGeocacheSelection->getRadius()?>" required>
                   </div>
                   <div class="form-group col-md-3 invalid-feedback">
                     Please provide a valid Radius.
@@ -115,10 +104,10 @@ function read_key($filename)
                     <label for="selectCacheType">Cache Type:</label>
                   </div>
                   <div class="form-group col-md-6">
-                    <select class="form-control" id="selectCacheType" placeholder="cache-type">
-                      <option>opt 1</option>
-                      <option>opt 2</option>
-                      <option>opt 3</option>
+                    <select class="form-control" id="selectCacheType" name="cacheType">
+                      <option value="Traditional">Traditional</option>
+                      <option value="Mystery/Puzzle">Mystery/Puzzle</option>
+                      <option value="Multi-Cache">Multi-Cache</option>
                     </select>
                   </div>
                 </div>
@@ -128,10 +117,17 @@ function read_key($filename)
                     <label for="selectDifficulty">Difficulty:</label>
                   </div>
                   <div class="form-group col-md-6">
-                    <select class="form-control" id="selectDifficulty" placeholder="difficulty">
-                      <option>opt 1</option>
-                      <option>opt 2</option>
-                      <option>opt 3</option>
+                    <select class="form-control" id="selectDifficulty" name="difficulty">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
                     </select>
                   </div>
                 </div>
@@ -139,7 +135,7 @@ function read_key($filename)
                 <div class="form-group form-row">
                   <div class="col"></div>
                   <div class="col-md-8 justify-content-center">
-                    <button class="btn btn-primary form-control" type="submit">Submit</button>
+                    <button class="btn btn-primary form-control" type="button" onclick="handleSubmit();">Submit</button>
                   </div>
                   <div class="col"></div>
                 </div>
@@ -148,28 +144,6 @@ function read_key($filename)
               </form>
             </div>
 
-            
-            
-            <script>
-              // Example starter JavaScript for disabling form submissions if there are invalid fields
-              (function() {
-                'use strict';
-                window.addEventListener('load', function() {
-                  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                  var forms = document.getElementsByClassName('needs-validation');
-                  // Loop over them and prevent submission
-                  var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                      if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                      }
-                      form.classList.add('was-validated');
-                    }, false);
-                  });
-                }, false);
-              })();
-            </script>
           </div>
 
           <!-- col 2 -->
@@ -183,12 +157,14 @@ function read_key($filename)
           </div>
         </div>
 
-        <div class="row"><hr></div>
         <!-- row 2 -->
+        <div class="row"><hr></div>
+
+        <!-- row 3 -->
         <div class="row">
-          <!-- col 1 -->
+          <!-- row 3, col 1 -->
           <div class="col" id="geocache-form-results">
-            <div class="row" id="geocache-form-results">
+            
               <table class="table table-hover">
                 <thead>
                   <tr>
@@ -198,28 +174,11 @@ function read_key($filename)
                     <th scope="col">Cache Type</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td scope="row">32.14105481</th>
-                    <td>-110.17201093</td>
-                    <td>10</td>
-                    <td>@multi-cache</td>
-                  </tr>
-                  <tr>
-                    <td scope="row">32.22111910</th>
-                    <td>-110.08108222</td>
-                    <td>4</td>
-                    <td>@mystery-puzzle</td>
-                  </tr>
-                  <tr>
-                    <td scope="row">32.33456564</th>
-                    <td>-110.71970180</td>
-                    <td>6</td>
-                    <td>@traditional</td>
-                  </tr>
+                <tbody id="geocache-query-results">
+                  
                 </tbody>
               </table>
-            </div>
+            
           </div>
         </div>
       </div>
