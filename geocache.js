@@ -6,11 +6,10 @@ window.onload = function(){
   var map;
   var markers;
   var myLatLng;
-  var xmlDocFlickrInitThumbNails = [];
   mockFlickr();
 }
 // -------------------------------------------------------------- // 
-// -------------------------------------------------------------- // 
+// ----------------// MYSQLi //---------------------------------- // 
 // -------------------------------------------------------------- // 
 function handleSubmit()
 {
@@ -24,63 +23,11 @@ function handleSubmit()
   return false;
 }
 
-function getImgUrlsFromFlickr(xmlDocResponse)
-{
-  imgUrls = [];
-  var photos = xmlDocResponse.getElementsByTagName('photo');
-  for (var i = 0; ((i <= photos.length) && (i <= 12)); i++) 
-  {
-    var url = "";
-    var farm_id = photos[i].getAttribute("farm");
-    var server_id = photos[i].getAttribute("server");
-    var id = photos[i].getAttribute("id");
-    var secret = photos[i].getAttribute("secret");
-
-    url = `https://farm${farm_id}.staticflickr.com/${server_id}/${id}_${secret}_t.jpg`
-    imgUrls.push(url);
-  }
-  return imgUrls;
-}
-
-function queryFlickrRestApi(markerId,lat,lon)
-{
-  new Ajax.Request("https://api.flickr.com/services/rest/",
-  // new Ajax.Request("http://foo.localhost",
-  {
-    requestHeaders: { "Access-Control-Allow-Headers": "x-prototype-version" },
-    method: "get",
-    parameters: {api_key: "e0a2ae1f37ac1e47df32f7053517b7cf", method: "flickr.photos.search", lat: lat, lon: lon},   
-    onSuccess: function(transport){
-      var response = transport.responseXML || "no response text";
-      var imgUrls = getImgUrlsFromFlickr(response);
-      
-      // LOL
-      console.log(imgUrls);
-      console.log(markerId);
-      addFlickerImgs(markerId,imgUrls);
-    },
-    onFailure: function(response) { console.log('FAILURE'); console.log(response); }
-  });
-}
-
-function addFlickerImgs(markerId,imgUrls)
-{
-  var div = document.getElementById(markerId);
-  var flickrApi;
-  flickrApi = new FlickrAPI(div);
-  var mockflickrApi = new FlickrAPI(document.getElementById('flickr-api'));
-  for (var i = 0; ((i < imgUrls.length) && (i <= 6)); i++) 
-  {
-    console.log("adding flicker imgs");
-    flickrApi.addRowForReal(imgUrls[i]);
-    mockflickrApi.addRowForReal(imgUrls[i]);
-  }
-}
-
 function queryGeocache(minLat,maxLat,minLong,maxLong,difficulty,cacheType)
 {
-  new Ajax.Request("http://u.arizona.edu/~klnorth/cscv337/geocache-site/query.php",
-  // new Ajax.Request("http://foo.localhost",
+  //var url = "http://u.arizona.edu/~klnorth/cscv337/geocache-site/query.php";
+  var url = "http://foo.localhost/geocache-site/query.php";
+  new Ajax.Request(url,
   {
     method: "post",
     parameters: {minLat: minLat, maxLat: maxLat, minLong: minLong, maxLong: maxLong, difficulty: difficulty, cacheType: cacheType},   
@@ -149,21 +96,29 @@ function addMarker(location) {
     map: map
   });
 
-  id = `marker-${location['lat']}${location['lng']}`;
-  queryFlickrRestApi(id, location['lat'], location['lng']);
-
-  var div = document.createElement('div');
-  div.setAttribute("id",id);
-  div.setAttribute("class","container-fluid");
-  // genFlickrContentHTML(div);
-
+  // Info Window - Details
+  var infoWindoDiv = document.createElement('div');
+  var h3Lat        = document.createElement('h3');
+  h3Lat.innerHTML  = location['lat'];
+  var h3Lng        = document.createElement('h3');
+  h3Lng.innerHTML  = location['lng'];
+  infoWindoDiv.appendChild(h3Lat);
+  infoWindoDiv.appendChild(h3Lng);
   var infowindow = new google.maps.InfoWindow({
-    content: div
+    content: infoWindoDiv
   });
-
   marker.addListener('click', function() {
     infowindow.open(map, marker);
   });
+
+  // FlickrAPI - Images
+  // add onClick event to marker that does the following..
+  var flickrDiv  = document.getElementById('flickr-api');
+  marker.flickerApi = new FlickrAPI(flickrDiv, location['lat'], location['lng']);
+  marker.addListener('click', function() {
+      marker.flickerApi.initHtmlDomElements(); // teardown flickr-api div
+      requestHtmlDomElementsForFlickrApi(marker.flickerApi);
+    });
 
   markers.push(marker);
 }
@@ -196,6 +151,131 @@ function deleteMarkers() {
 // ----------------// FLICKR API //------------------------------ //
 // -------------------------------------------------------------- // 
 
+function requestHtmlDomElementsForFlickrApi(flickerApi)
+{
+  console.log(flickerApi.lat + ',' + flickerApi.lng);
+  new Ajax.Request("https://api.flickr.com/services/rest/",
+  {
+    requestHeaders: { "Access-Control-Allow-Headers": "x-prototype-version" },
+    method: "get",
+    parameters: {api_key: "e0a2ae1f37ac1e47df32f7053517b7cf", method: "flickr.photos.search", lat: flickerApi.lat, lon: flickerApi.lng},   
+    onSuccess: function(transport){
+      var response = transport.responseXML || "no response text";
+      flickerApi.makeFlickrImgUrls(response);
+    },
+    onFailure: function(response) { console.log('FAILURE'); console.log(response); }
+  });
+}
+
+function mockFlickr()
+{
+  var flickerApi = new FlickrAPI(document.getElementById('flickr-api'));
+  flickerApi.initHtmlDomElements();
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.generateDOMElements();
+}
+
+function FlickrAPI(div, lat, lng)
+{
+  this.div          = div;
+  this.imgUrls      = [];
+  this.displayCount = 12;
+  this.lat          = lat;
+  this.lng          = lng;
+}
+
+FlickrAPI.prototype.initHtmlDomElements = function() 
+{
+  this.div.innerHTML = "";
+}
+
+// DOM inheritance looks like --> 'div#flickr-api' --> 'div.row' --> 'div.col' --> 'img.img-fluid'
+FlickrAPI.prototype.generateDOMElements = function()
+{
+  var row;
+  var col;
+  var img;
+  alert('entering generateDOMElements');
+  if(this.imgUrls.length < 1)
+  {
+    row = makeDivRow();
+  
+    col = makeDivCol();
+    var h3        = document.createElement('h3');
+    h3.innerHTML  = "Could not uncover any pictures for this geocache";
+    h3.setAttribute("class","no-geocache-message");
+    col.appendChild(h3);
+    row.appendChild(col);
+
+    col = makeDivCol();
+    img = makeFlickrImg("https://i.imgur.com/TmNA8BU.jpg");
+    col.appendChild(img);
+    row.appendChild(col);
+
+    this.div.appendChild(row);
+  }
+  else
+  {
+    console.log("imgUrls.length=" + this.imgUrls.length);
+    console.log("imgUrls=" + this.imgUrls);
+    
+    for (var i = 0; ((i < this.imgUrls.length) && (i < this.displayCount)); i++) 
+    {
+      if( ( i % 2 ) == 0 ) // I want 2 columns of pictures
+      {
+        row = makeDivRow();
+      }
+      col = makeDivCol();
+      img = makeFlickrImg(this.imgUrls[i]);
+      img.setAttribute('id',i);
+      col.appendChild(img);
+      row.appendChild(col);
+
+      if( ( i % 2 ) == 0 ) // I want 2 columns of pictures
+      {
+        this.div.appendChild(row);
+      }
+    }
+  }
+}
+
+FlickrAPI.prototype.addImgUrl = function(url)
+{
+  this.imgUrls.push(url);
+}
+
+FlickrAPI.prototype.makeFlickrImgUrls = function(xmlDocResponse)
+{
+  if(xmlDocResponse instanceof XMLDocument)
+  {
+    var photos = xmlDocResponse.getElementsByTagName('photo');
+    for (var i = 0; ((i < photos.length) && (i < 12)); i++) 
+    {
+      var url = "";
+      var farm_id = photos[i].getAttribute("farm");
+      var server_id = photos[i].getAttribute("server");
+      var id = photos[i].getAttribute("id");
+      var secret = photos[i].getAttribute("secret");
+
+      url = `https://farm${farm_id}.staticflickr.com/${server_id}/${id}_${secret}_t.jpg`
+      // imgUrls.push(url);
+      this.addImgUrl(url);
+    }
+  }
+  this.generateDOMElements(); // reDraw the dom for imgUrls
+  // return imgUrls;
+}
 
 function makeDivRow()
 {
@@ -217,96 +297,5 @@ function makeFlickrImg(url)
   img.className = "img-fluid";
   img.src       = url;
   return img;
-}
-
-function mockFlickr()
-{
-  var flickrApi;
-  flickrApi = new FlickrAPI(document.getElementById('flickr-api'));
-  flickrApi.addRow();
-  flickrApi.addRow();
-  flickrApi.addRow();
-  flickrApi.addRow();
-  flickrApi.addRow();
-  flickrApi.addRow();
-}
-
-function genFlickrContentHTML(div)
-{
-  var flickrApi;
-  flickrApi = new FlickrAPI(div);
-  for (var i = 0; ((i <= 6)); i++) 
-  {
-    flickrApi.addRow();
-  }
-}
-
-function FlickrAPI(div) 
-{
-  this.div = div;
-  // this.div.setAttribute('class','container-fluid');
-}
-FlickrAPI.prototype.addRow = function() 
-{
-  var row = makeDivRow();
-  row = appendMockFlickrPicturesTo(row);
-  this.div.appendChild(row);
-}
-FlickrAPI.prototype.addRowForReal = function(url1) 
-{
-  var row = makeDivRow();
-  row = appendFlickrPicturesTo(row,url1);
-  this.div.appendChild(row);
-}
-
-function appendFlickrPicturesTo(divRow,url1)
-{
-  // var url1    = url1;
-  var url2    = "https://i.imgur.com/TmNA8BU.jpg";
-  // var url3    = "https://i.imgur.com/TmNA8BU.jpg";
-
-  var divCol1 = makeDivCol();
-  var divCol2 = makeDivCol();
-  // var divCol3 = makeDivCol();
-  
-  var img1    = makeFlickrImg(url1);
-  var img2    = makeFlickrImg(url2);
-  // var img3    = makeFlickrImg(url3);
-
-  divCol1.appendChild(img1);
-  divCol2.appendChild(img2);
-  // divCol3.appendChild(img3);
-
-  divRow.appendChild(divCol1);
-  divRow.appendChild(divCol2);
-  // divRow.appendChild(divCol3);
-
-  return divRow;
-}
-
-// pass var, return value is the param.
-function appendMockFlickrPicturesTo(divRow)
-{
-  var url1    = "https://i.imgur.com/TmNA8BU.jpg";
-  var url2    = "https://i.imgur.com/TmNA8BU.jpg";
-  // var url3    = "https://i.imgur.com/TmNA8BU.jpg";
-
-  var divCol1 = makeDivCol();
-  var divCol2 = makeDivCol();
-  // var divCol3 = makeDivCol();
-  
-  var img1    = makeFlickrImg(url1);
-  var img2    = makeFlickrImg(url2);
-  // var img3    = makeFlickrImg(url3);
-
-  divCol1.appendChild(img1);
-  divCol2.appendChild(img2);
-  // divCol3.appendChild(img3);
-
-  divRow.appendChild(divCol1);
-  divRow.appendChild(divCol2);
-  // divRow.appendChild(divCol3);
-
-  return divRow;
 }
 

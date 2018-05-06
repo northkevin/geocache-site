@@ -53,95 +53,97 @@ require "main.php";
           <!-- col 1 -->
           <div class="col-3 has-padding">
             <div class="row" id="geocache-form-inputs">
-              <form class="form-control" id="geocache-form" onSubmit="handleSubmit()">
-                <fieldset>
+              <div class="col-md">
+                <form class="form-control" id="geocache-form" onSubmit="handleSubmit()">
+                  <fieldset>
 
-                <div class="form-row justify-content-center">
-                  <div class="form-group">
-                    <label class="title" for="form-instructions">Geocache Locator</label>
-                    <small id="form-instructions" class="form-text">Click on the map to select a location, or enter one manually below.</small>
+                  <div class="form-row justify-content-center">
+                    <div class="form-group">
+                      <label class="title" for="form-instructions">Geocache Locator</label>
+                      <small id="form-instructions" class="form-text">Click on the map to select a location, or enter one manually below.</small>
+                    </div>
                   </div>
-                </div>
-                
-                <div class="form-row justify-content-center">
-                  <div class="form-group col-md-3 justify-content-right">
-                    <label for="inputLatitude">Latitude:</label>
+                  
+                  <div class="form-row justify-content-center">
+                    <div class="form-group col-md-3 justify-content-right">
+                      <label for="inputLatitude">Latitude:</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <input type="text" class="form-control" id="inputLatitude" name="latitude" placeholder="<?=$displayGeocacheSelection->getLatitude()?>" required>
+                    </div>
+                    <div class="form-group col-md-3 invalid-feedback">
+                      Please provide a valid Latitude.
+                    </div>
                   </div>
-                  <div class="form-group col-md-6">
-                    <input type="text" class="form-control" id="inputLatitude" name="latitude" placeholder="<?=$displayGeocacheSelection->getLatitude()?>" required>
-                  </div>
-                  <div class="form-group col-md-3 invalid-feedback">
-                    Please provide a valid Latitude.
-                  </div>
-                </div>
 
-                <div class="form-row justify-content-center">
-                  <div class="form-group col-md-3 justify-content-left">
-                    <label for="inputLongitude">Longitude:</label>
+                  <div class="form-row justify-content-center">
+                    <div class="form-group col-md-3 justify-content-left">
+                      <label for="inputLongitude">Longitude:</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <input type="text" class="form-control" id="inputLongitude" name="longitude" placeholder="<?=$displayGeocacheSelection->getLongitude()?>" required>
+                    </div>
+                    <div class="form-group col-md-3 invalid-feedback">
+                      Please provide a valid Longitude.
+                    </div>
                   </div>
-                  <div class="form-group col-md-6">
-                    <input type="text" class="form-control" id="inputLongitude" name="longitude" placeholder="<?=$displayGeocacheSelection->getLongitude()?>" required>
-                  </div>
-                  <div class="form-group col-md-3 invalid-feedback">
-                    Please provide a valid Longitude.
-                  </div>
-                </div>
 
-                <div class="form-row justify-content-center">
-                  <div class="form-group col-md-3 justify-content-left">
-                    <label for="inputRadius">Radius (miles):</label>
+                  <div class="form-row justify-content-center">
+                    <div class="form-group col-md-3 justify-content-left">
+                      <label for="inputRadius">Radius (miles):</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <input type="text" class="form-control" id="inputRaidus" name="radius" placeholder="<?=$displayGeocacheSelection->getRadius()?>" required>
+                    </div>
+                    <div class="form-group col-md-3 invalid-feedback">
+                      Please provide a valid Radius.
+                    </div>
                   </div>
-                  <div class="form-group col-md-6">
-                    <input type="text" class="form-control" id="inputRaidus" name="radius" placeholder="<?=$displayGeocacheSelection->getRadius()?>" required>
-                  </div>
-                  <div class="form-group col-md-3 invalid-feedback">
-                    Please provide a valid Radius.
-                  </div>
-                </div>
 
-                <div class="form-row form-group zero-margin-bottom justify-content-center">
-                  <div class="form-group col-md-3 justify-content-left">
-                    <label for="selectCacheType">Cache Type:</label>
+                  <div class="form-row form-group zero-margin-bottom justify-content-center">
+                    <div class="form-group col-md-3 justify-content-left">
+                      <label for="selectCacheType">Cache Type:</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <select class="form-control" id="selectCacheType" name="cacheType">
+                        <option value="Traditional">Traditional</option>
+                        <option value="Mystery/Puzzle">Mystery/Puzzle</option>
+                        <option value="Multi-Cache">Multi-Cache</option>
+                      </select>
+                    </div>
                   </div>
-                  <div class="form-group col-md-6">
-                    <select class="form-control" id="selectCacheType" name="cacheType">
-                      <option value="Traditional">Traditional</option>
-                      <option value="Mystery/Puzzle">Mystery/Puzzle</option>
-                      <option value="Multi-Cache">Multi-Cache</option>
-                    </select>
-                  </div>
-                </div>
 
-                <div class="form-group form-row justify-content-center">
-                  <div class="form-group col-md-3 justify-content-left">
-                    <label for="selectDifficulty">Difficulty:</label>
+                  <div class="form-group form-row justify-content-center">
+                    <div class="form-group col-md-3 justify-content-left">
+                      <label for="selectDifficulty">Difficulty:</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <select class="form-control" id="selectDifficulty" name="difficulty">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </div>
                   </div>
-                  <div class="form-group col-md-6">
-                    <select class="form-control" id="selectDifficulty" name="difficulty">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                    </select>
-                  </div>
-                </div>
 
-                <div class="form-group form-row">
-                  <div class="col"></div>
-                  <div class="col-md-8 justify-content-center">
-                    <button class="btn btn-primary form-control" type="button" onclick="handleSubmit();">Submit</button>
+                  <div class="form-group form-row">
+                    <div class="col"></div>
+                    <div class="col-md-8 justify-content-center">
+                      <button class="btn btn-primary form-control" type="button" onclick="handleSubmit();">Submit</button>
+                    </div>
+                    <div class="col"></div>
                   </div>
-                  <div class="col"></div>
-                </div>
 
-                </fieldset>
-              </form>
+                  </fieldset>
+                </form>
+              </div>
             </div>
 
           </div>
