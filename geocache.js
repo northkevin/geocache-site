@@ -153,7 +153,6 @@ function deleteMarkers() {
 
 function requestHtmlDomElementsForFlickrApi(flickerApi)
 {
-  console.log(flickerApi.lat + ',' + flickerApi.lng);
   new Ajax.Request("https://api.flickr.com/services/rest/",
   {
     requestHeaders: { "Access-Control-Allow-Headers": "x-prototype-version" },
@@ -206,7 +205,6 @@ FlickrAPI.prototype.generateDOMElements = function()
   var row;
   var col;
   var img;
-  alert('entering generateDOMElements');
   if(this.imgUrls.length < 1)
   {
     row = makeDivRow();
