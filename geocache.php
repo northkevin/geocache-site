@@ -1,12 +1,5 @@
 <?php
-
 require "main.php";
-
-// default display is Tucson
-// $displayGeocacheSelection = new GeocacheSelection(32.253, -110.912, 5, 'Traditional', 7);
-
-
-
 ?>
 
 <!DOCTYPE html>

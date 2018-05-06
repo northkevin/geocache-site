@@ -34,7 +34,7 @@ function queryGeocache(minLat,maxLat,minLong,maxLong,difficulty,cacheType)
     onSuccess: function(transport){
       var response = transport.responseText || "no response text";
       var json = JSON.parse(response);
-      console.log(json);
+      // console.log(json);
       drawQueryResults(json);
       drawQueryResultMarkers(json);
     },
@@ -151,11 +151,11 @@ function deleteMarkers() {
 // ----------------// FLICKR API //------------------------------ //
 // -------------------------------------------------------------- // 
 
-function requestHtmlDomElementsForFlickrApi(flickerApi)
+function OLDrequestHtmlDomElementsForFlickrApi(flickerApi)
 {
   new Ajax.Request("https://api.flickr.com/services/rest/",
   {
-    requestHeaders: { "Access-Control-Allow-Headers": "x-prototype-version" },
+    //requestHeaders: { "Access-Control-Allow-Headers": "x-prototype-version" },
     method: "get",
     parameters: {api_key: "e0a2ae1f37ac1e47df32f7053517b7cf", method: "flickr.photos.search", lat: flickerApi.lat, lon: flickerApi.lng},   
     onSuccess: function(transport){
@@ -164,6 +164,30 @@ function requestHtmlDomElementsForFlickrApi(flickerApi)
     },
     onFailure: function(response) { console.log('FAILURE'); console.log(response); }
   });
+}
+
+function requestHtmlDomElementsForFlickrApi(flickerApi)
+{
+  var xmlhttp = new XMLHttpRequest();
+  var api_key = "e0a2ae1f37ac1e47df32f7053517b7cf"; // TODO change this to load local resource
+  var method  = "flickr.photos.search";
+  var lat     = flickerApi.lat;
+  var lon     = flickerApi.lng;
+  var baseUrl = "https://api.flickr.com/services/rest/";
+  var url     = baseUrl + '?' + 'api_key=' + api_key + '&method=' + method + '&lat=' + lat + '&lon=' + lon;
+  
+  xmlhttp.open("GET", url, true);
+  xmlhttp.responseType = 'document';
+  xmlhttp.overrideMimeType('text/xml');
+  xmlhttp.onreadystatechange = function() 
+  {
+    if(xmlhttp.readyState == 4 && xmlhttp.status == 200) 
+    {
+      var rsp = xmlhttp.responseXML;
+      flickerApi.makeFlickrImgUrls(rsp);
+    }
+  };
+  xmlhttp.send();
 }
 
 function mockFlickr()
@@ -225,8 +249,8 @@ FlickrAPI.prototype.generateDOMElements = function()
   }
   else
   {
-    console.log("imgUrls.length=" + this.imgUrls.length);
-    console.log("imgUrls=" + this.imgUrls);
+    // console.log("imgUrls.length=" + this.imgUrls.length);
+    // console.log("imgUrls=" + this.imgUrls);
     
     for (var i = 0; ((i < this.imgUrls.length) && (i < this.displayCount)); i++) 
     {
