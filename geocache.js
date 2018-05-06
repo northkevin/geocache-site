@@ -25,8 +25,8 @@ function handleSubmit()
 
 function queryGeocache(minLat,maxLat,minLong,maxLong,difficulty,cacheType)
 {
-  //var url = "http://u.arizona.edu/~klnorth/cscv337/geocache-site/query.php";
-  var url = "http://foo.localhost/geocache-site/query.php";
+  var url = "http://u.arizona.edu/~klnorth/cscv337/geocache-site/query.php";
+  // var url = "http://foo.localhost/geocache-site/query.php";
   new Ajax.Request(url,
   {
     method: "post",

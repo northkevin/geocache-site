@@ -14,7 +14,7 @@ function query_geocache_results($difficulty, $cacheType)
 
     . "AND cache_types.cache_type = \"$cacheType\"";
 
-  $results = local_query($sql);
+  $results = unsecure_query($sql);
   return $results;
 }
 
@@ -34,7 +34,7 @@ function query_geocache_results_final($minLat, $maxLat, $minLong, $maxLong, $dif
 
     . "AND (cache_types.cache_type = \"$cacheType\")";
 
-  $results = local_query($sql);
+  $results = unsecure_query($sql);
   return $results;
 }
 
