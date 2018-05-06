@@ -8,18 +8,39 @@ window.onload = function(){
   var myLatLng;
   mockFlickr();
 }
+
 // -------------------------------------------------------------- // 
 // ----------------// MYSQLi //---------------------------------- // 
 // -------------------------------------------------------------- // 
 function handleSubmit()
 {
-  var minLat     = map.getBounds().f.b;
-  var maxLat     = map.getBounds().f.f;
-  var minLong    = map.getBounds().b.b;
-  var maxLong    = map.getBounds().b.f;
-  var difficulty = document.getElementById('selectDifficulty').value;
-  var cacheType  = document.getElementById('selectCacheType').value;
-  queryGeocache(minLat,maxLat,minLong,maxLong,difficulty,cacheType);
+  var form           = document.getElementById('geocache-form');
+  var inputLatitude  = document.getElementById('inputLatitude');
+  var inputLongitude = document.getElementById('inputLongitude');
+  var inputRadius    = document.getElementById('inputRadius');
+  if( !inputLatitude.checkValidity() || !inputLongitude.checkValidity() || !inputRadius.checkValidity() )
+  {
+    // lol I've been doing this for too long, just hackin' away..
+    // originally, I did validation using 'submit' on my form button.. then I refactored to use 'onclick' javascript eventListener
+    // .. so now you get this fake button to force my original validation code lol.
+    var fakeSubmitButton = document.createElement('input');
+    fakeSubmitButton.setAttribute('type','submit');
+    fakeSubmitButton.style.visibility = "hidden";
+    form.appendChild(fakeSubmitButton);
+    fakeSubmitButton.click();
+  }
+  else
+  {
+    console.log("executing geocache query");
+    var minLat     = map.getBounds().f.b;
+    var maxLat     = map.getBounds().f.f;
+    var minLong    = map.getBounds().b.b;
+    var maxLong    = map.getBounds().b.f;
+    var difficulty = document.getElementById('selectDifficulty').value;
+    var cacheType  = document.getElementById('selectCacheType').value;
+    console.log(minLat,maxLat,minLong,maxLong,difficulty,cacheType);
+    queryGeocache(minLat,maxLat,minLong,maxLong,difficulty,cacheType);
+  }
   return false;
 }
 
@@ -46,7 +67,8 @@ function drawQueryResults($json)
 {
   var tbody = document.getElementById('geocache-query-results');
   tbody.innerHTML="";
-  for (var i = 0; ((i <= $json.length) && (i <= 20)); i++) 
+  // for (var i = 0; ((i <= $json.length) && (i <= 20)); i++) 
+  for (var i = 0; i < $json.length; i++) 
   {
     var row = tbody.insertRow(0);
     var col1 = row.insertCell(0);
@@ -64,10 +86,14 @@ function drawQueryResults($json)
 function drawQueryResultMarkers($json)
 {
   deleteMarkers();
-  for (var i = 0; ((i <= $json.length) && (i <= 20)); i++) 
+  // for (var i = 0; ((i <= $json.length) && (i <= 20)); i++) 
+  for (var i = 0; i < $json.length; i++) 
   {
+    var difficulty = $json[i]['difficulty_rating'];
+    var cache_type = $json[i]['cache_type'];
     var myLatLng = {lat: parseFloat($json[i]['latitude']), lng: parseFloat($json[i]['longitude'])};
-    addMarker(myLatLng);
+    console.log(myLatLng);
+    addMarker(myLatLng,cache_type,difficulty);
   }
   showMarkers();
 }
@@ -89,11 +115,12 @@ function initMap()
 }
 
 // Adds a marker to the map and push to the array.
-function addMarker(location) {
+function addMarker(location,cache_type,difficulty) {
 
   var marker = new google.maps.Marker({
     position: location,
-    map: map
+    map: map,
+    title: cache_type + ": " + difficulty
   });
 
   // Info Window - Details
@@ -109,6 +136,9 @@ function addMarker(location) {
   });
   marker.addListener('click', function() {
     infowindow.open(map, marker);
+    window.setTimeout(function() {
+      infowindow.close(map,marker);
+    }, 6000);
   });
 
   // FlickrAPI - Images
@@ -248,10 +278,7 @@ FlickrAPI.prototype.generateDOMElements = function()
     this.div.appendChild(row);
   }
   else
-  {
-    // console.log("imgUrls.length=" + this.imgUrls.length);
-    // console.log("imgUrls=" + this.imgUrls);
-    
+  { 
     for (var i = 0; ((i < this.imgUrls.length) && (i < this.displayCount)); i++) 
     {
       if( ( i % 2 ) == 0 ) // I want 2 columns of pictures
@@ -282,7 +309,7 @@ FlickrAPI.prototype.makeFlickrImgUrls = function(xmlDocResponse)
   if(xmlDocResponse instanceof XMLDocument)
   {
     var photos = xmlDocResponse.getElementsByTagName('photo');
-    for (var i = 0; ((i < photos.length) && (i < 12)); i++) 
+    for (var i = 0; ((i < photos.length) && (i < this.displayCount)); i++) 
     {
       var url = "";
       var farm_id = photos[i].getAttribute("farm");
@@ -291,12 +318,10 @@ FlickrAPI.prototype.makeFlickrImgUrls = function(xmlDocResponse)
       var secret = photos[i].getAttribute("secret");
 
       url = `https://farm${farm_id}.staticflickr.com/${server_id}/${id}_${secret}_t.jpg`
-      // imgUrls.push(url);
       this.addImgUrl(url);
     }
   }
   this.generateDOMElements(); // reDraw the dom for imgUrls
-  // return imgUrls;
 }
 
 function makeDivRow()

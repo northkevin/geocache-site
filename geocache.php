@@ -23,9 +23,15 @@ require "main.php";
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- jasny extension to boostrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
     <!-- javascript for google maps -->
     <script src="geocache.js" type="text/javascript"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=<?=$GOOGLEMAPKEY?>&callback=initMap" async defer> </script>
+    <!-- ... uhh trying this jquery stuff -->
   </head>
 
   <body>
@@ -62,7 +68,7 @@ require "main.php";
                       <label for="inputLatitude">Latitude:</label>
                     </div>
                     <div class="form-group col-md-6">
-                      <input type="text" class="form-control" id="inputLatitude" name="latitude" placeholder="<?=$displayGeocacheSelection->getLatitude()?>" required>
+                      <input type="number" min="31" max="37" step="0.00000001" class="form-control" id="inputLatitude" name="latitude" placeholder="<?=$displayGeocacheSelection->getLatitude()?>" required>
                     </div>
                     <div class="form-group col-md-3 invalid-feedback">
                       Please provide a valid Latitude.
@@ -74,7 +80,7 @@ require "main.php";
                       <label for="inputLongitude">Longitude:</label>
                     </div>
                     <div class="form-group col-md-6">
-                      <input type="text" class="form-control" id="inputLongitude" name="longitude" placeholder="<?=$displayGeocacheSelection->getLongitude()?>" required>
+                      <input type="number" min="-115" max="-109" step="0.0000001"  class="form-control" id="inputLongitude" name="longitude" placeholder="<?=$displayGeocacheSelection->getLongitude()?>" required>
                     </div>
                     <div class="form-group col-md-3 invalid-feedback">
                       Please provide a valid Longitude.
@@ -86,7 +92,7 @@ require "main.php";
                       <label for="inputRadius">Radius (miles):</label>
                     </div>
                     <div class="form-group col-md-6">
-                      <input type="text" class="form-control" id="inputRaidus" name="radius" placeholder="<?=$displayGeocacheSelection->getRadius()?>" required>
+                      <input type="number" step="5" min="5" max="250" class="form-control" id="inputRadius" name="radius" placeholder="<?=$displayGeocacheSelection->getRadius()?>" required>
                     </div>
                     <div class="form-group col-md-3 invalid-feedback">
                       Please provide a valid Radius.
@@ -160,7 +166,7 @@ require "main.php";
           <!-- row 3, col 1 -->
           <div class="col" id="geocache-form-results">
             
-              <table class="table table-hover">
+              <table class="table table-hover rowlink" data-link="row">
                 <thead>
                   <tr>
                     <th scope="col">Lattitude</th>
