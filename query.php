@@ -34,7 +34,7 @@ function query_geocache_results_final($minLat, $maxLat, $minLong, $maxLong, $dif
 
     . "AND (cache_types.cache_type = \"$cacheType\")"
 
-    . "LIMIT 8";
+    . "LIMIT 15";
 
   $results = unsecure_query($sql);
   return $results;

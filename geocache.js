@@ -7,6 +7,7 @@ window.onload = function()
   var markers;
   var myLatLng;
   mockFlickr();
+  ; //milliseconds
 }
 
 function handleSubmit()
@@ -102,7 +103,7 @@ function drawQueryResultMarkers($json)
     var difficulty = $json[i]['difficulty_rating'];
     var cache_type = $json[i]['cache_type'];
     var myLatLng = {lat: parseFloat($json[i]['latitude']), lng: parseFloat($json[i]['longitude'])};
-    console.log(myLatLng);
+    // console.log(myLatLng);
     addMarker(myLatLng,cache_type,difficulty);
   }
   showMarkers();
@@ -125,7 +126,8 @@ function initMap()
 // Adds a marker to the map and push to the array.
 function addMarker(location,cache_type,difficulty) 
 {
-
+  var markerTimeout = 10000;
+  
   var marker = new google.maps.Marker({
     position: location,
     map: map,
@@ -142,7 +144,7 @@ function addMarker(location,cache_type,difficulty)
     infowindow.open(map, marker);
     window.setTimeout(function() {
       infowindow.close(map,marker);
-    }, 6000);
+    }, markerTimeout);
   });
 
   // FlickrAPI - Images

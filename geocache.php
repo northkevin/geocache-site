@@ -66,46 +66,37 @@ $GOOGLEMAPKEY = get_google_api_key();
                   </div>
                   
                   <div class="form-row justify-content-center">
-                    <div class="form-group col-md-3 justify-content-right">
+                    <div class="form-group col-md-4 justify-content-right">
                       <label for="inputLatitude">Latitude:</label>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md">
                       <input type="number" min="31" max="37" step="0.00000001" class="form-control" id="inputLatitude" name="latitude" placeholder="<?=$displayGeocacheSelection->getLatitude()?>" required>
                     </div>
-                    <div class="form-group col-md-3 invalid-feedback">
-                      Please provide a valid Latitude.
-                    </div>
                   </div>
 
                   <div class="form-row justify-content-center">
-                    <div class="form-group col-md-3 justify-content-left">
+                    <div class="form-group col-md-4 justify-content-left">
                       <label for="inputLongitude">Longitude:</label>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md">
                       <input type="number" min="-115" max="-109" step="0.0000001"  class="form-control" id="inputLongitude" name="longitude" placeholder="<?=$displayGeocacheSelection->getLongitude()?>" required>
-                    </div>
-                    <div class="form-group col-md-3 invalid-feedback">
-                      Please provide a valid Longitude.
-                    </div>
+                    </div>                    
                   </div>
 
                   <div class="form-row justify-content-center">
-                    <div class="form-group col-md-3 justify-content-left">
+                    <div class="form-group col-md-4 justify-content-left">
                       <label for="inputRadius">Radius (miles):</label>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md">
                       <input type="number" step="5" min="5" max="250" class="form-control" id="inputRadius" name="radius" placeholder="<?=$displayGeocacheSelection->getRadius()?>" required>
-                    </div>
-                    <div class="form-group col-md-3 invalid-feedback">
-                      Please provide a valid Radius.
-                    </div>
+                    </div>                    
                   </div>
 
                   <div class="form-row form-group zero-margin-bottom justify-content-center">
-                    <div class="form-group col-md-3 justify-content-left">
+                    <div class="form-group col-md-4 justify-content-left">
                       <label for="selectCacheType">Cache Type:</label>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md">
                       <select class="form-control" id="selectCacheType" name="cacheType">
                         <option value="Traditional">Traditional</option>
                         <option value="Mystery/Puzzle">Mystery/Puzzle</option>
@@ -115,10 +106,10 @@ $GOOGLEMAPKEY = get_google_api_key();
                   </div>
 
                   <div class="form-group form-row justify-content-center">
-                    <div class="form-group col-md-3 justify-content-left">
+                    <div class="form-group col-md-4 justify-content-left">
                       <label for="selectDifficulty">Difficulty:</label>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md">
                       <select class="form-control" id="selectDifficulty" name="difficulty">
                         <option value="1">1</option>
                         <option value="2">2</option>
