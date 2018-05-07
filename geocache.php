@@ -1,5 +1,7 @@
 <?php
-require "main.php";
+require "lib.php";
+$displayGeocacheSelection = new GeocacheSelection(32.253, -110.912, 5, 'Traditional', 7);
+$GOOGLEMAPKEY = get_google_api_key();
 ?>
 
 <!DOCTYPE html>

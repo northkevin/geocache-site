@@ -1,17 +1,14 @@
 // -------------------------------------------------------------- // 
+// -----------------// DOM //------------------------------------ // 
 // -------------------------------------------------------------- // 
-// -------------------------------------------------------------- // 
-window.onload = function(){
-  //var myMapObj = new myMap();
+window.onload = function()
+{
   var map;
   var markers;
   var myLatLng;
   mockFlickr();
 }
 
-// -------------------------------------------------------------- // 
-// ----------------// MYSQLi //---------------------------------- // 
-// -------------------------------------------------------------- // 
 function handleSubmit()
 {
   var form           = document.getElementById('geocache-form');
@@ -31,18 +28,33 @@ function handleSubmit()
   }
   else
   {
-    console.log("executing geocache query");
-    var minLat     = map.getBounds().f.b;
-    var maxLat     = map.getBounds().f.f;
-    var minLong    = map.getBounds().b.b;
-    var maxLong    = map.getBounds().b.f;
-    var difficulty = document.getElementById('selectDifficulty').value;
-    var cacheType  = document.getElementById('selectCacheType').value;
-    console.log(minLat,maxLat,minLong,maxLong,difficulty,cacheType);
-    queryGeocache(minLat,maxLat,minLong,maxLong,difficulty,cacheType);
+    var newCenter    = {lat: parseFloat(inputLatitude.value), lng: parseFloat(inputLongitude.value)};
+    var newMapBounds = calculateBoundsFromCenter(parseFloat(inputLatitude.value),parseFloat(inputLongitude.value));
+    var difficulty   = document.getElementById('selectDifficulty').value;
+    var cacheType    = document.getElementById('selectCacheType').value;
+    setMapToCenter(newCenter);
+    queryGeocache(newMapBounds['minLat'],newMapBounds['maxLat'],newMapBounds['minLong'],newMapBounds['maxLong'],difficulty,cacheType);
   }
   return false;
 }
+function calculateBoundsFromCenter(inputLatitude,inputLongitude)
+{
+  var offsetLat  = 1.21015;
+  var offsetLng  = 1.67916;
+  var minLat     = inputLatitude  - offsetLat;
+  var maxLat     = inputLatitude  + offsetLat;
+  var minLong    = inputLongitude - offsetLng;
+  var maxLong    = inputLongitude + offsetLng;
+  return {minLat: minLat, maxLat: maxLat, minLong: minLong, maxLong: maxLong};
+}
+function setMapToCenter(newCenter)
+{
+  map.setCenter(newCenter);
+}
+  
+// -------------------------------------------------------------- // 
+// ----------------// PHP //------------------------------------- // 
+// -------------------------------------------------------------- // 
 
 function queryGeocache(minLat,maxLat,minLong,maxLong,difficulty,cacheType)
 {
@@ -67,26 +79,24 @@ function drawQueryResults($json)
 {
   var tbody = document.getElementById('geocache-query-results');
   tbody.innerHTML="";
-  // for (var i = 0; ((i <= $json.length) && (i <= 20)); i++) 
   for (var i = 0; i < $json.length; i++) 
   {
-    var row = tbody.insertRow(0);
-    var col1 = row.insertCell(0);
-    var col2 = row.insertCell(1);
-    var col3 = row.insertCell(2);
-    var col4 = row.insertCell(3);
-    col1.setAttribute("scope","row");
+    var row        = tbody.insertRow(0);
+    var col1       = row.insertCell(0);
+    var col2       = row.insertCell(1);
+    var col3       = row.insertCell(2);
+    var col4       = row.insertCell(3);
     col1.innerHTML = $json[i]['latitude'];
     col2.innerHTML = $json[i]['longitude'];
     col3.innerHTML = $json[i]['difficulty_rating'];
     col4.innerHTML = '@' + $json[i]['cache_type'];
+    col1.setAttribute("scope","row");
   }
 }
 
 function drawQueryResultMarkers($json)
 {
   deleteMarkers();
-  // for (var i = 0; ((i <= $json.length) && (i <= 20)); i++) 
   for (var i = 0; i < $json.length; i++) 
   {
     var difficulty = $json[i]['difficulty_rating'];
@@ -98,24 +108,23 @@ function drawQueryResultMarkers($json)
   showMarkers();
 }
 
-
-
 // -------------------------------------------------------------- // 
 // ----------------// GOOGLE MAPS API //------------------------- // 
 // -------------------------------------------------------------- // 
 
 function initMap() 
 {
-  markers = [];
+  markers  = [];
   myLatLng = {lat: 32.253, lng: -110.912};
-  map = new google.maps.Map(document.getElementById('google-maps-api'), {
+  map      = new google.maps.Map(document.getElementById('google-maps-api'), {
     center: myLatLng,
     zoom: 8
   });
 }
 
 // Adds a marker to the map and push to the array.
-function addMarker(location,cache_type,difficulty) {
+function addMarker(location,cache_type,difficulty) 
+{
 
   var marker = new google.maps.Marker({
     position: location,
@@ -124,14 +133,9 @@ function addMarker(location,cache_type,difficulty) {
   });
 
   // Info Window - Details
-  var infoWindoDiv = document.createElement('div');
-  var h3Lat        = document.createElement('h3');
-  h3Lat.innerHTML  = location['lat'];
-  var h3Lng        = document.createElement('h3');
-  h3Lng.innerHTML  = location['lng'];
-  infoWindoDiv.appendChild(h3Lat);
-  infoWindoDiv.appendChild(h3Lng);
-  var infowindow = new google.maps.InfoWindow({
+  var data         = {lat: location['lat'], lng: location['lng'], cache_type: cache_type, difficulty: difficulty};
+  var infoWindoDiv = makeInfoWindowHTML(data);
+  var infowindow   = new google.maps.InfoWindow({
     content: infoWindoDiv
   });
   marker.addListener('click', function() {
@@ -143,7 +147,7 @@ function addMarker(location,cache_type,difficulty) {
 
   // FlickrAPI - Images
   // add onClick event to marker that does the following..
-  var flickrDiv  = document.getElementById('flickr-api');
+  var flickrDiv     = document.getElementById('flickr-api');
   marker.flickerApi = new FlickrAPI(flickrDiv, location['lat'], location['lng']);
   marker.addListener('click', function() {
       marker.flickerApi.initHtmlDomElements(); // teardown flickr-api div
@@ -154,28 +158,49 @@ function addMarker(location,cache_type,difficulty) {
 }
 
 // Sets the map on all markers in the array.
-function setMapOnAll(map) {
+function setMapOnAll(map) 
+{
   for (var i = 0; i < markers.length; i++) {
     markers[i].setMap(map);
   }
 }
 
 // Removes the markers from the map, but keeps them in the array.
-function clearMarkers() {
+function clearMarkers() 
+{
   setMapOnAll(null);
 }
 
 // Shows any markers currently in the array.
-function showMarkers() {
+function showMarkers() 
+{
   setMapOnAll(map);
 }
 
 // Deletes all markers in the array by removing references to them.
-function deleteMarkers() {
+function deleteMarkers() 
+{
   clearMarkers();
   markers = [];
 }
 
+function makeInfoWindowHTML(data)
+{ 
+  var div                 = document.createElement('div');
+  var h3Lat               = document.createElement('h3');
+  h3Lat.innerHTML         = data['lat'];
+  var h3Lng               = document.createElement('h3');
+  h3Lng.innerHTML         = data['lng'];
+  var h4Cache_type        = document.createElement('h4');
+  h4Cache_type.innerHTML  = data['cache_type'];
+  var h4Difficulty        = document.createElement('h4');
+  h4Difficulty.innerHTML  = data['difficulty'];
+  div.appendChild(h3Lat);
+  div.appendChild(h3Lng);
+  div.appendChild(h4Cache_type);
+  div.appendChild(h4Difficulty);
+  return div;
+}
 
 // -------------------------------------------------------------- // 
 // ----------------// FLICKR API //------------------------------ //
@@ -261,17 +286,16 @@ FlickrAPI.prototype.generateDOMElements = function()
   var img;
   if(this.imgUrls.length < 1)
   {
-    row = makeDivRow();
-  
-    col = makeDivCol();
+    row           = makeDivRow();
+    col           = makeDivCol();
     var h3        = document.createElement('h3');
     h3.innerHTML  = "Could not uncover any pictures for this geocache";
     h3.setAttribute("class","no-geocache-message");
     col.appendChild(h3);
     row.appendChild(col);
 
-    col = makeDivCol();
-    img = makeFlickrImg("https://i.imgur.com/TmNA8BU.jpg");
+    col           = makeDivCol();
+    img           = makeFlickrImg("https://i.imgur.com/TmNA8BU.jpg");
     col.appendChild(img);
     row.appendChild(col);
 
@@ -311,11 +335,11 @@ FlickrAPI.prototype.makeFlickrImgUrls = function(xmlDocResponse)
     var photos = xmlDocResponse.getElementsByTagName('photo');
     for (var i = 0; ((i < photos.length) && (i < this.displayCount)); i++) 
     {
-      var url = "";
-      var farm_id = photos[i].getAttribute("farm");
+      var url       = "";
+      var farm_id   = photos[i].getAttribute("farm");
       var server_id = photos[i].getAttribute("server");
-      var id = photos[i].getAttribute("id");
-      var secret = photos[i].getAttribute("secret");
+      var id        = photos[i].getAttribute("id");
+      var secret    = photos[i].getAttribute("secret");
 
       url = `https://farm${farm_id}.staticflickr.com/${server_id}/${id}_${secret}_t.jpg`
       this.addImgUrl(url);
@@ -326,23 +350,22 @@ FlickrAPI.prototype.makeFlickrImgUrls = function(xmlDocResponse)
 
 function makeDivRow()
 {
-  var divRow = document.createElement("div");
+  var divRow       = document.createElement("div");
   divRow.className = "row"
   return divRow;
 }
 
 function makeDivCol()
 {
-  var divCol = document.createElement("div");
+  var divCol       = document.createElement("div");
   divCol.className = "col-sm-6";
   return divCol;
 }
 
 function makeFlickrImg(url)
 {
-  var img = document.createElement("img");
+  var img       = document.createElement("img");
   img.className = "img-fluid";
   img.src       = url;
   return img;
 }
-
