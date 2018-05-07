@@ -1,22 +1,6 @@
 <?php
 
 require 'lib.php';
-  
-function query_geocache_results($difficulty, $cacheType)
-{
-  $sql = "SELECT latitude, longitude, difficulty_rating, cache_types.cache_type \n"
-
-    . "FROM `test_data`\n"
-
-    . "INNER JOIN cache_types ON cache_types.type_id = cache_type_id\n"
-
-    . "WHERE difficulty_rating = $difficulty\n"
-
-    . "AND cache_types.cache_type = \"$cacheType\"";
-
-  $results = unsecure_query($sql);
-  return $results;
-}
 
 function query_geocache_results_final($minLat, $maxLat, $minLong, $maxLong, $difficulty, $cacheType)
 {
@@ -42,8 +26,6 @@ function query_geocache_results_final($minLat, $maxLat, $minLong, $maxLong, $dif
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
-
-  // var_dump($_POST);
 
   if(isset($_POST['minLat']))
   {

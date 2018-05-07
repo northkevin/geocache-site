@@ -60,7 +60,6 @@ function setMapToCenter(newCenter)
 function queryGeocache(minLat,maxLat,minLong,maxLong,difficulty,cacheType)
 {
   var url = "http://u.arizona.edu/~klnorth/cscv337/geocache-site/query.php";
-  // var url = "http://foo.localhost/geocache-site/query.php";
   new Ajax.Request(url,
   {
     method: "post",
@@ -68,7 +67,6 @@ function queryGeocache(minLat,maxLat,minLong,maxLong,difficulty,cacheType)
     onSuccess: function(transport){
       var response = transport.responseText || "no response text";
       var json = JSON.parse(response);
-      // console.log(json);
       drawQueryResults(json);
       drawQueryResultMarkers(json);
     },
@@ -103,7 +101,6 @@ function drawQueryResultMarkers($json)
     var difficulty = $json[i]['difficulty_rating'];
     var cache_type = $json[i]['cache_type'];
     var myLatLng = {lat: parseFloat($json[i]['latitude']), lng: parseFloat($json[i]['longitude'])};
-    // console.log(myLatLng);
     addMarker(myLatLng,cache_type,difficulty);
   }
   showMarkers();
@@ -212,7 +209,6 @@ function OLDrequestHtmlDomElementsForFlickrApi(flickerApi)
 {
   new Ajax.Request("https://api.flickr.com/services/rest/",
   {
-    //requestHeaders: { "Access-Control-Allow-Headers": "x-prototype-version" },
     method: "get",
     parameters: {api_key: "e0a2ae1f37ac1e47df32f7053517b7cf", method: "flickr.photos.search", lat: flickerApi.lat, lon: flickerApi.lng},   
     onSuccess: function(transport){
@@ -251,18 +247,18 @@ function mockFlickr()
 {
   var flickerApi = new FlickrAPI(document.getElementById('flickr-api'));
   flickerApi.initHtmlDomElements();
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
-  flickerApi.addImgUrl("https://i.imgur.com/TmNA8BU.jpg");
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
+  flickerApi.addImgUrl(flickerApi.DEFAULT_IMG);
   flickerApi.generateDOMElements();
 }
 
@@ -273,6 +269,7 @@ function FlickrAPI(div, lat, lng)
   this.displayCount = 12;
   this.lat          = lat;
   this.lng          = lng;
+  this.DEFAULT_IMG  = "https://i.imgur.com/TmNA8BU.jpg";
 }
 
 FlickrAPI.prototype.initHtmlDomElements = function() 
@@ -288,6 +285,10 @@ FlickrAPI.prototype.generateDOMElements = function()
   var img;
   if(this.imgUrls.length < 1)
   {
+    //
+    // Display to user that no flickr images exist for this geocache location
+    //
+
     row           = makeDivRow();
     col           = makeDivCol();
     var h3        = document.createElement('h3');
@@ -297,7 +298,7 @@ FlickrAPI.prototype.generateDOMElements = function()
     row.appendChild(col);
 
     col           = makeDivCol();
-    img           = makeFlickrImg("https://i.imgur.com/TmNA8BU.jpg");
+    img           = makeFlickrImg(this.DEFAULT_IMG);
     col.appendChild(img);
     row.appendChild(col);
 
@@ -305,6 +306,10 @@ FlickrAPI.prototype.generateDOMElements = function()
   }
   else
   { 
+    //
+    // Display the flickr images to user
+    //
+    
     for (var i = 0; ((i < this.imgUrls.length) && (i < this.displayCount)); i++) 
     {
       if( ( i % 2 ) == 0 ) // I want 2 columns of pictures
